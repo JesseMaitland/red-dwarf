@@ -1,0 +1,12 @@
+red_dwarf_config:
+  schema: foo
+  table: bar
+  timestamp_column: created_at
+  delete_after: false
+  vacuum_after: false
+  analyse_after: false
+  days_to_keep: 365
+  partition_by: created_at
+  s3_bucket: my-s3-bucket-goes-here
+  s3_key: my-s3-key-goes-here
+
