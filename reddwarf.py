@@ -1,4 +1,9 @@
 from rsterm import run_entry_point
 
-if __name__ == "__main__":
+
+def main():
     run_entry_point()
+
+
+if __name__ == "__main__":
+    main()

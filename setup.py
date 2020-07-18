@@ -31,15 +31,13 @@ setup(
     include_package_data=True,
     long_description=readme(),
     install_requires=[
-        'pyyaml',
-        'psycopg2-binary',
-        'python-dotenv',
-        'jinja2'
+        'jinja2',
+        'rsterm'
     ],
     license='MIT',
     packages=find_packages(exclude=('tests*', 'venv')),
     entry_points={
-        'console_scripts': ['red-dwarf = main:main']
+        'console_scripts': ['red-dwarf = red_dwarf:main']
     },
     download_url="",
     long_description_content_type="text/markdown",
