@@ -1,22 +1,48 @@
+import yaml
 from pathlib import Path
 from typing import List, Dict
-import yaml
-from typing import NamedTuple
+from jinja2 import Template
 
 
-class RedDwarfConfig(NamedTuple):
-    path: Path
-    schema: str
-    table: str
-    timestamp_column: str
-    days_to_keep: int
-    partition_by: str
-    s3_bucket: str
-    s3_key: str
-    delete_after: bool
-    vacuum_after: bool
-    analyse_after: bool
-    iam_role: str
+class RedDwarfConfig:
+
+    def __init__(self,
+                 path: Path,
+                 schema: str,
+                 table: str,
+                 timestamp_column: str,
+                 days_to_keep: int,
+                 partition_by: str,
+                 s3_bucket: str,
+                 s3_key: str,
+                 delete_after: bool,
+                 vacuum_after: bool,
+                 analyse_after: bool,
+                 iam_role: str = None):
+
+        self.path = path
+        self.schema = schema
+        self.table = table
+        self.timestamp_column = timestamp_column
+        self.days_to_keep = days_to_keep
+        self.partition_by = partition_by
+        self.s3_bucket = s3_bucket
+        self.s3_key = s3_key
+        self.delete_after = delete_after
+        self.vacuum_after = vacuum_after
+        self.analyse_after = analyse_after
+        self._iam_role = iam_role
+
+    @property
+    def iam_role(self) -> str:
+        return self._iam_role
+
+    @iam_role.setter
+    def iam_role(self, iam_role: str):
+        if self._iam_role is None:
+            self._iam_role = iam_role
+        else:
+            raise ValueError("iam_role already set and can no longer be overridden.")
 
 
 class ProjectContext:
@@ -80,9 +106,15 @@ class ProjectContext:
 
     @staticmethod
     def parse_config(config_path: Path) -> RedDwarfConfig:
-        config = yaml.safe_load(config_path.open())['red_dwarf_unload_config']
+        config = yaml.safe_load(config_path.open())['red_dwarf_config']
         config['path'] = config_path
         return RedDwarfConfig(**config)
+
+    def render_config(self, config_name: str) -> str:
+        template_path = Path(__file__).absolute().parent / "template.sql"
+        config = self.get_config(config_name)
+        template = Template(template_path.read_text())
+        return template.render(config=config)
 
 
 def provide_project_context(func):

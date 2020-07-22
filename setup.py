@@ -37,7 +37,7 @@ setup(
     license='MIT',
     packages=find_packages(exclude=('tests*', 'venv')),
     entry_points={
-        'console_scripts': ['red-dwarf = red_dwarf:main']
+        'console_scripts': ['red-dwarf = reddwarf.reddwarf:main']
     },
     download_url="",
     long_description_content_type="text/markdown",
