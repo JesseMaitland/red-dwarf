@@ -110,11 +110,11 @@ class ProjectContext:
         config['path'] = config_path
         return RedDwarfConfig(**config)
 
-    def render_config(self, config_name: str) -> str:
+    def render_config(self, config_name: str, iam_role: str) -> str:
         template_path = Path(__file__).absolute().parent / "template.sql"
         config = self.get_config(config_name)
         template = Template(template_path.read_text())
-        return template.render(config=config)
+        return template.render(config=config, iam_role=iam_role)
 
 
 def provide_project_context(func):
