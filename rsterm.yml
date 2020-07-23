@@ -36,6 +36,7 @@ rsterm:
       - new
       - list
       - run
+      - print
 
     nouns:
       - config

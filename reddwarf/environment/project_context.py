@@ -10,9 +10,11 @@ class RedDwarfConfig:
                  path: Path,
                  schema: str,
                  table: str,
+                 unload_format: str,
                  timestamp_column: str,
                  days_to_keep: int,
                  partition_by: str,
+                 cast_partition_by_time: bool,
                  s3_bucket: str,
                  s3_key: str,
                  delete_after: bool,
@@ -23,9 +25,11 @@ class RedDwarfConfig:
         self.path = path
         self.schema = schema
         self.table = table
+        self.unload_format = unload_format
         self.timestamp_column = timestamp_column
         self.days_to_keep = days_to_keep
         self.partition_by = partition_by
+        self.cast_partition_by_time = cast_partition_by_time
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
         self.delete_after = delete_after
