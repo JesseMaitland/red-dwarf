@@ -1,11 +1,5 @@
 from rsterm import EntryPoint
-from reddwarf.environment import ProjectContext, provide_project_context, RedDwarfConfig
-
-common_args = {
-    ('config_name',): {
-        'help': 'The name of the configuration to create'
-    }
-}
+from reddwarf.environment import ProjectContext, provide_project_context
 
 
 class BaseConfigEntry(EntryPoint):
@@ -35,7 +29,6 @@ class BaseConfigEntry(EntryPoint):
 
 
 class NewConfig(BaseConfigEntry):
-    entry_point_args = common_args
 
     @provide_project_context
     def run(self, project_context: ProjectContext) -> None:
@@ -44,7 +37,6 @@ class NewConfig(BaseConfigEntry):
 
 
 class RunConfig(BaseConfigEntry):
-    entry_point_args = common_args
 
     @provide_project_context
     def run(self, project_context: ProjectContext) -> None:
