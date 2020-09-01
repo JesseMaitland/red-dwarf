@@ -1,0 +1,42 @@
+red_dwarf_config:
+    table:
+      schema: bar
+      name: foo
+
+    execution:
+      method: ONCE  # other options CONTINUOUS / ONCE CONTINUOUS
+      start_date: 2020-01-02
+      interval: DAYS # options YEARS, MONTHS, DAYS, HOURS
+      inverval_value: 365
+
+    unload:
+      vacuum: false
+      delete: false
+      analyse: false
+      options:
+        - FORMAT PARQUET
+
+    glue:
+      create_glue_catalog: true
+      database: bar
+      table_name: foo
+      partition:
+        start_date: 2020-01-01
+        end_date: 2020-08-01
+        column: created_at
+        by:
+          - DAYS
+          - YEARS
+          - MONTHS
+          - DATES
+          - HOURS
+
+    s3:
+      bucket: UNLOAD_BUCKET_HERE
+      key_prefix: UNLOAD_KEY_HERE
+      iam_role: RED_DWARF_IAM_ROLE
+
+    spectrum:
+      create_external_table: true
+      schema: ext_bar
+      table_name: foo

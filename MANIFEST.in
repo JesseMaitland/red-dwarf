@@ -1,0 +1,2 @@
+include reddwarf/templates/*.sql
+include reddwarf/templates/*.yml

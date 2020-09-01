@@ -1,7 +1,8 @@
-import sys
 import os
+import sys
 from setuptools import setup, find_packages
 from setuptools.command.install import install
+
 
 VERSION = '0.0.1'
 
@@ -24,25 +25,12 @@ def readme():
 
 
 setup(
-    name='red-dwarf',
+    name='red_dwarf',
     version=VERSION,
-    author='Jesse Maitland',
-    discription='A tool for unloading historical data from AWS Redshift to S3',
+    author='Sly Stalone',
+    discription='A great cli tool!',
     include_package_data=True,
-    long_description=readme(),
-    install_requires=[
-        'jinja2',
-        'rsterm'
-    ],
-    license='MIT',
     packages=find_packages(exclude=('tests*', 'venv')),
-    entry_points={
-        'console_scripts': ['red-dwarf = reddwarf.reddwarf:main']
-    },
-    download_url="",
-    long_description_content_type="text/markdown",
-    python_requires='>=3',
-    cmdclass={
-        'verify': VerifyVersionCommand,
-    }
+    entry_points={'console_scripts': ['red-dwarf = red_dwarf.__main__:main']},
+    python_requires='>=3'
 )
