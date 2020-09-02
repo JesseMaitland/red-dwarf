@@ -11,13 +11,23 @@ class ProjectContext:
     def __init__(self):
         root = Path.cwd().absolute() / "red-dwarf"
         configs = 'configs'
+        rendered = 'rendered'
 
         self._paths = {
             'root': root,
             configs: root / configs,
+            rendered: root / rendered
         }
 
         self.parse_config: Callable = None
+
+    @property
+    def template_path(self) -> Path:
+        return self._template_path
+
+    @property
+    def unload_template_path(self) -> Path:
+        return self._template_path / "unload.sql"
 
     def set_config_parser(self, config_parser: Callable) -> None:
         self.parse_config = config_parser

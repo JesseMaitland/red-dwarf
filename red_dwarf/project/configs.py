@@ -9,6 +9,15 @@ class TableConfig:
     def __init__(self, schema: str, name: str) -> None:
         self.schema = schema
         self.name = name
+        self._column_list: List[str] = None
+
+    @property
+    def column_list(self) -> List[str]:
+        return self._column_list
+
+    @column_list.setter
+    def column_list(self, value):
+        self._column_list = value
 
 
 class ExecutionConfig:
@@ -40,7 +49,7 @@ class ExecutionConfig:
     def new(cls, **kwargs):
 
         try:
-            method = ExecutionMethods[kwargs['execution']['method']]
+            method = ExecutionMethods[kwargs['method']]
 
         except KeyError:
             raise KeyError(f"the execution and method options must be set in the red-dwarf config")
@@ -63,7 +72,7 @@ class ExecutionConfig:
 
     @property
     def method(self) -> ExecutionMethods:
-        return ExecutionMethods(value=self._method)
+        return ExecutionMethods[self._method]
 
     @property
     def start_date(self) -> datetime:
@@ -76,6 +85,20 @@ class ExecutionConfig:
     @property
     def interval_value(self) -> int:
         return self._interval_value
+
+    @property
+    def once(self) -> str:
+        if self.method == ExecutionMethods.ONCE or self.method == ExecutionMethods.ONCE_INCREMENTAL:
+            return ExecutionMethods.ONCE.name
+        else:
+            return ''
+
+    @property
+    def incremental(self) -> str:
+        if self.method == ExecutionMethods.INCREMENTAL or self.method == ExecutionMethods.ONCE_INCREMENTAL:
+            return ExecutionMethods.INCREMENTAL.name
+        else:
+            return ''
 
 
 class UnloadConfig:
@@ -126,11 +149,10 @@ class PartitionConfig:
 
 class GlueConfig:
 
-    def __init__(self, create_glue_catalog: bool, database: str, table_name: str, partition: Dict) -> None:
+    def __init__(self, create_glue_catalog: bool, database: str, table_name: str) -> None:
         self.create_glue_catalog = create_glue_catalog
         self.database = database
         self.table_name = table_name
-        self.partition = PartitionConfig(**partition)
 
 
 class SpectrumConfig:
@@ -143,22 +165,27 @@ class SpectrumConfig:
 
 class RedDwarfConfig:
 
-    def __init__(self, table, execution, unload, glue, s3, spectrum) -> None:
+    def __init__(self, table, execution, unload, glue, s3, spectrum, partition) -> None:
         self._table = TableConfig(**table)
         self._unload = UnloadConfig(**unload)
-        self._execution = ExecutionConfig(**execution)
+        self._execution = ExecutionConfig.new(**execution)
         self._glue = GlueConfig(**glue)
         self._s3 = S3Config(**s3)
         self._spectrum = SpectrumConfig(**spectrum)
+        self.partition = PartitionConfig(**partition)
 
     @property
-    def table(self) -> Dict:
+    def table(self) -> TableConfig:
         return self._table
 
     @property
-    def unload(self) -> Dict:
+    def unload(self) -> UnloadConfig:
         return self._unload
 
     @property
-    def s3_config(self) -> Dict:
+    def s3(self) -> S3Config:
         return self._s3
+
+    @property
+    def execution(self) -> ExecutionConfig:
+        return self._execution

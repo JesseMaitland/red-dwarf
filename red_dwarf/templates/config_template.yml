@@ -7,7 +7,7 @@ red_dwarf_config:
       method: ONCE  # other options CONTINUOUS / ONCE CONTINUOUS
       start_date: 2020-01-02
       interval: DAYS # options YEARS, MONTHS, DAYS, HOURS
-      inverval_value: 365
+      interval_value: 365
 
     unload:
       vacuum: false
@@ -20,20 +20,21 @@ red_dwarf_config:
       create_glue_catalog: true
       database: bar
       table_name: foo
-      partition:
-        start_date: 2020-01-01
-        end_date: 2020-08-01
-        column: created_at
-        by:
-          - DAYS
-          - YEARS
-          - MONTHS
-          - DATES
-          - HOURS
+
+    partition:
+      start_date: 2020-01-01
+      end_date: 2020-08-01
+      column: created_at
+      by:
+        - DAYS
+        - YEARS
+        - MONTHS
+        - DATES
+        - HOURS
 
     s3:
-      bucket: UNLOAD_BUCKET_HERE
-      key_prefix: UNLOAD_KEY_HERE
+      bucket: RED_DWARF_UNLOAD_BUCKET
+      key_prefix: foo/bar
       iam_role: RED_DWARF_IAM_ROLE
 
     spectrum:
